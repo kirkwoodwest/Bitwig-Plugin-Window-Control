@@ -20,8 +20,10 @@ public class PluginWindowControlExtension extends ControllerExtension {
     super(definition, host);
   }
 
-  private int NUM_DEVICES = 12;
-  private int NUM_LAYERS = 32;
+  private int NUM_DEVICES = 4;
+  private int NUM_LAYERS = 4;
+  int NUM_TRACKS = 4;
+  int NUM_SENDS = 1;
 
   @Override
   public void init() {
@@ -31,28 +33,45 @@ public class PluginWindowControlExtension extends ControllerExtension {
     // For now just show a popup notification for verification that it is running.
     host.showPopupNotification("Plugin Window Control Initialized");
 
-    int NUM_TRACKS = 32;
-    TrackBank trackBank = host.createTrackBank(NUM_TRACKS, 0, 0, true);
+    Preferences prefrences = host.getPreferences();
+    String category = "Track Count (Requires Restart)";
+
+    NumberSetting numberTracks = new NumberSetting(host, prefrences,"# Tracks for All", category, 1, 64, 1, "Tracks", NUM_TRACKS, (value)->{host.println("number of tracks" + value );});
+    NUM_TRACKS = numberTracks.getValue();
+
+    NumberSetting numberSends = new NumberSetting(host, prefrences, "# Sends for All", category, 1, 16, 1, "Sends", NUM_SENDS, null);
+    NUM_SENDS = numberSends.getValue();
+
+    NumberSetting numberDevices = new NumberSetting(host, prefrences, "# Devices Per Channel", category, 1, 32, 1, "Devices", NUM_DEVICES, null);
+    NUM_DEVICES = numberDevices.getValue();
+
+    NumberSetting numberLayers = new NumberSetting(host, prefrences, "# Device Layers ", category, 1, 32, 1, "Device Layers", NUM_LAYERS, null);
+    NUM_LAYERS = numberLayers.getValue();
+
+    TrackBank trackBank = host.createTrackBank(NUM_TRACKS, NUM_SENDS, 0, true);
 
     for (int i = 0; i < NUM_TRACKS; i++) {
       Channel channel = trackBank.getItemAt(i);
       processChannel(channel, bankDeviceList);
     }
+
     MasterTrack masterTrack = host.createMasterTrack(0);
     processChannel(masterTrack, bankDeviceList);
     
     CursorTrack cursorTrack = host.createCursorTrack("Cursor Track", "Cursor Track", 0, 0, true);
     processChannel(cursorTrack, cursorTrackDeviceList);
 
-    settingOpenWindows = host.getDocumentState().getSignalSetting("Open", "Plugin Window Management", "Open Plugins");
-    settingCloseWindows = host.getDocumentState().getSignalSetting("Close", "Plugin Window Management", "Close Plugins");
+    settingAllOpenWindows = host.getDocumentState().getSignalSetting("Open", "All Channels", "Open All Plugins ");
+    settingAllCloseWindows = host.getDocumentState().getSignalSetting("Close", "All Channels", "Close All Plugins");
+    settingAllOpenWindows.addSignalObserver(() -> showPluginWindows(true, bankDeviceList));
+    settingAllCloseWindows.addSignalObserver(() -> showPluginWindows(false, bankDeviceList));
+
+    settingOpenWindows = host.getDocumentState().getSignalSetting("Open", "Channel", "Open Plugins");
+    settingCloseWindows = host.getDocumentState().getSignalSetting("Close", "Channel", "Close Plugins");
     settingOpenWindows.addSignalObserver(() -> showPluginWindows(true, cursorTrackDeviceList));
     settingCloseWindows.addSignalObserver(() -> showPluginWindows(false, cursorTrackDeviceList));
 
-    settingAllOpenWindows = host.getDocumentState().getSignalSetting("Open", "All Plugin Window Management", "Open All Plugins ");
-    settingAllCloseWindows = host.getDocumentState().getSignalSetting("Close", "All Plugin Window Management", "Close All Plugins");
-    settingAllOpenWindows.addSignalObserver(() -> showPluginWindows(true, bankDeviceList));
-    settingAllCloseWindows.addSignalObserver(() -> showPluginWindows(false, bankDeviceList));
+
   }
 
   private void processChannel(Channel channel, ArrayList<Device> deviceList){
@@ -62,7 +81,6 @@ public class PluginWindowControlExtension extends ControllerExtension {
       processDevice(device, deviceList);
       
     }
-
   }
 
    private void processDevice(Device  device, ArrayList<Device> deviceList ) {
@@ -70,7 +88,6 @@ public class PluginWindowControlExtension extends ControllerExtension {
      DeviceLayerBank layerBank = device.createLayerBank(NUM_LAYERS);
      for (int j = 0; j < NUM_LAYERS; j++) {
         DeviceBank layerDeviceBank = layerBank.getItemAt(j).createDeviceBank(NUM_DEVICES);
-
         for (int k = 0; k < NUM_DEVICES; k++) {
            Device device2 = layerDeviceBank.getItemAt(k);
            addDevice(device2, deviceList);
