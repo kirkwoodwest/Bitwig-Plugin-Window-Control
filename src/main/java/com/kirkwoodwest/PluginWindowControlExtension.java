@@ -10,10 +10,7 @@ public class PluginWindowControlExtension extends ControllerExtension {
 
   private Signal settingOpenWindows;
   private Signal settingCloseWindows;
-  private ArrayList<Device> deviceList = new ArrayList<Device>();
-   private Signal popUpBrowser;
-   private PopupBrowser browesr;
-   private Browser deviceBrowser;
+  private ArrayList<Device> deviceList = new ArrayList<>();
 
 
   protected PluginWindowControlExtension(final PluginWindowControlExtensionDefinition definition, final ControllerHost host) {
@@ -21,7 +18,7 @@ public class PluginWindowControlExtension extends ControllerExtension {
   }
 
   private int NUM_DEVICES = 12;
-  private int NUM_LAYERS = 3;
+  private int NUM_LAYERS = 32;
 
   @Override
   public void init() {
@@ -49,17 +46,7 @@ public class PluginWindowControlExtension extends ControllerExtension {
     settingCloseWindows = host.getDocumentState().getSignalSetting("Close", "Window Management", "Close Plugin Windows");
     settingOpenWindows.addSignalObserver(() -> showPluginWindows(true));
     settingCloseWindows.addSignalObserver(() -> showPluginWindows(false));
-
-//    popUpBrowser = host.getDocumentState().getSignalSetting("PopUp Browser", "Browser Management", "PopUp Browser");
-//    popUpBrowser.addSignalObserver(() ->popupBrowser());
-//    browesr =       getHost().createPopupBrowser();
-  //  deviceBrowser = deviceList.get(0).createDeviceBrowser(20,20);
-
   }
-
-   private void popupBrowser() {
-
-   }
 
    private void processDevice(Device  device ) {
      addDevice(device);
@@ -73,29 +60,31 @@ public class PluginWindowControlExtension extends ControllerExtension {
         }
      }
 
-     DeviceBank deviceChain = device.deviceChain().createDeviceBank(NUM_DEVICES);
-
-     for (int a = 0; a < NUM_LAYERS; a++) {
-        Device device2 = deviceChain.getItemAt(a);
-        addDevice(device2);
-
-        DeviceLayerBank layerBank2 = device2.createLayerBank(NUM_LAYERS);
-        for (int d = 0; d < NUM_LAYERS; d++) {
-           DeviceBank layerDeviceBank = layerBank2.getItemAt(d).createDeviceBank(NUM_DEVICES);
-           for (int k = 0; k < NUM_DEVICES; k++) {
-              Device device3 = layerDeviceBank.getDevice(k);
-              addDevice(device3);
-           }
-        }
-     }
+//     DeviceBank deviceChain = device.deviceChain().createDeviceBank(NUM_DEVICES);
+//
+//     for (int a = 0; a < NUM_LAYERS; a++) {
+//        Device device2 = deviceChain.getItemAt(a);
+//        addDevice(device2);
+//
+//        DeviceLayerBank layerBank2 = device2.createLayerBank(NUM_LAYERS);
+//        for (int d = 0; d < NUM_LAYERS; d++) {
+//           DeviceBank layerDeviceBank = layerBank2.getItemAt(d).createDeviceBank(NUM_DEVICES);
+//           for (int k = 0; k < NUM_DEVICES; k++) {
+//              Device device3 = layerDeviceBank.getDevice(k);
+//              addDevice(device3);
+//           }
+//        }
+//     }
 
   }
 
   private void showPluginWindows(boolean b) {
     for (Device device : deviceList) {
       if (device.isPlugin().get()) {
-        device.isWindowOpen().set(b);
-        getHost().println("Devices: " + device.name().get());
+        if(device.isWindowOpen().get() != b) {
+          device.isWindowOpen().set(b);
+          getHost().println("Devices: " + device.name().get());
+        }
       }
     }
   }
