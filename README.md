@@ -3,7 +3,7 @@
  
  ![snap-2022-11-28_102619](https://user-images.githubusercontent.com/6645471/204352965-4d157b88-238c-4346-87c2-6f596b3d98cb.png)
 
-##Usage
+## Usage
 In the studio i/o panel there is a Cursor Track and a couple buttons or opening/closing windows. Navigate to the channel you want and press open/Close plugin windows.
 
 Note: Does not work with chain devices or FX Slots.
