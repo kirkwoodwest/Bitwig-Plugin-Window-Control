@@ -16,4 +16,6 @@ This should appear in the Controller Section
 ![image](https://user-images.githubusercontent.com/6645471/204353831-fb05d92e-4517-4894-8ee7-fe3660eb43d0.png)
 
 - This panel should appear in your Studio I/O Section in Bitwig.
+
+
 ![snap-2022-11-28_094206](https://user-images.githubusercontent.com/6645471/204353180-292ee8d1-813c-4053-b281-f4d27f03d9d2.png)
