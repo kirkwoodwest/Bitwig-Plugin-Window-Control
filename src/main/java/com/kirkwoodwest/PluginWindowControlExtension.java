@@ -70,8 +70,6 @@ public class PluginWindowControlExtension extends ControllerExtension {
     settingCloseWindows = host.getDocumentState().getSignalSetting("Close", "Channel", "Close Plugins");
     settingOpenWindows.addSignalObserver(() -> showPluginWindows(true, cursorTrackDeviceList));
     settingCloseWindows.addSignalObserver(() -> showPluginWindows(false, cursorTrackDeviceList));
-
-
   }
 
   private void processChannel(Channel channel, ArrayList<Device> deviceList){
