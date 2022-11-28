@@ -23,3 +23,7 @@ Be careful with the track and device and layer counts! If you allocate too many 
 - This panel should appear in your Studio I/O Section in Bitwig.
 
 ![image](https://user-images.githubusercontent.com/6645471/204392794-800cff88-6341-4137-97c2-2f20daeefae6.png)
+
+## Feedback
+Looking forward to developing this more. So if you have ideas or feedback, I woud like to hear them. kirkwoodwest@gmail.com 
+There are some things missing from the API as well and with some other users behind it we could get more API support. Its possible the bitwig overloards see this as a feature to eventually gets sucked up into Bitwig Studio.
