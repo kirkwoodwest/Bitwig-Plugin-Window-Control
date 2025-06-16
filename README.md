@@ -18,11 +18,11 @@ This should appear in the Controller Section
 
 You may need to hit the power button twice before the settings show up. When you make changes here you will need to hit the power button for re-initialization of the extension.
 
-Be careful with the track and device and layer counts! If you allocate too many Bitwig takes a while to process these. If you must optimize completely, set the All channel and send count to 1. 
+Be careful with the track and device and layer counts! If you allocate too many Bitwig takes a while to process these. If you must optimize completely, set the All channel and send count to 1.
 
-- This panel should appear in your Studio I/O Section in Bitwig.
+A Controller icon should appear in the [Controller Status Section](https://www.bitwig.com/userguide/latest/anatomy_of_the_bitwig_studio_window/#controller_status_section). Clicking on the Controller icon should display the Plugin Window Control panel.
 
-![image](https://user-images.githubusercontent.com/6645471/204392794-800cff88-6341-4137-97c2-2f20daeefae6.png)
+![image](doc/plugin-window-control-panel.png)
 
 ## Feedback
 Looking forward to developing this more. So if you have ideas or feedback, I woud like to hear them. kirkwoodwest@gmail.com 
